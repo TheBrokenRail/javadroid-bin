@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # TOOLCHAIN_ARCH = ["arm", "x86"]
 # ANDROID_ARCH = ["arm-linux-androideabi", "i686-linux-android"]
 # LIB_ARCH = ["arm", "i686"]
@@ -17,7 +19,7 @@ fi
 # Download NDK
 NDK_VER='android-ndk-r18b'
 curl -o ndk.zip "https://dl.google.com/android/repository/${NDK_VER}-linux-x86_64.zip"
-unzip ndk.zip
+unzip ndk.zip > /dev/null
 NDK_HOME=$(pwd)/${NDK_VER}
 
 # Build Toolchain
@@ -35,11 +37,11 @@ PATH=$ANDROID_DEVKIT/bin:$PATH
 
 # Build libffi for ARM
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
-  curl -o libffi.tar.gz ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz
+  curl -o libffi.tar.gz https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz
   tar -xvf libffi.tar.gz
   cd libffi-3.2.1
 
-  ./configure --host=arm-linux-androideabi --prefix=$(pwd)/arm-unknown-linux-androideabi
+  bash configure --host=arm-linux-androideabi --prefix=$(pwd)/arm-unknown-linux-androideabi
   make clean
   make
   make install
@@ -54,7 +56,7 @@ curl -o freetype.tar.gz https://download.savannah.gnu.org/releases/freetype/free
 tar -xvf freetype.tar.gz
 cd freetype-2.6.2
 
-./configure --host=${LIB_ARCH}-linux-android \
+bash configure --host=${LIB_ARCH}-linux-android \
   --prefix=$(pwd)/build_android-${LIB_ARCH} \
   --without-zlib \
   --with-png=no \
