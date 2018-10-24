@@ -99,7 +99,8 @@ bash configure \
   --with-freetype-lib=${FREETYPE_DIR}/lib \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
   ${EXTRA_ARM_1} \
-  ${EXTRA_ARM_2}
+  ${EXTRA_ARM_2} \
+  CFLAGS=-fPIE -pie
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
