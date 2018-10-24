@@ -37,7 +37,7 @@ PATH=$ANDROID_DEVKIT/bin:$PATH
 
 # Build libffi for ARM
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
-  curl -o libffi.tar.gz https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz
+  curl -o libffi.tar.gz "https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
   tar -xvf libffi.tar.gz
   cd libffi-3.2.1
 
@@ -51,7 +51,7 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
 fi
 
 # Build libfreetype
-curl -o freetype.tar.gz https://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.gz
+curl -o freetype.tar.gz "https://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.gz"
 ls
 tar -xvf freetype.tar.gz
 cd freetype-2.6.2
