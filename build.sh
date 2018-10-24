@@ -52,7 +52,6 @@ fi
 
 # Build libfreetype
 curl -L -o freetype.tar.gz "https://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.gz"
-ls
 tar -xvf freetype.tar.gz
 cd freetype-2.6.2
 
