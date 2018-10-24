@@ -3,6 +3,16 @@
 # TOOLCHAIN_ARCH = ["arm", "x86"]
 # ANDROID_ARCH = ["arm-linux-androideabi", "i686-linux-android"]
 # LIB_ARCH = ["arm", "i686"]
+if [ ${ARCH} = "arm" ]; then
+  TOOLCHAIN_ARCH="arm"
+  ANDROID_ARCH="arm-linux-androideabi"
+  LIB_ARCH="arm"
+fi
+if [ ${ARCH} = "x86" ]; then
+  TOOLCHAIN_ARCH="x86"
+  ANDROID_ARCH="i686-linux-android"
+  LIB_ARCH="i686"
+fi
 
 # Download NDK
 NDK_VER='android-ndk-r18b'
