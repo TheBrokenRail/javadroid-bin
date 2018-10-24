@@ -4,4 +4,4 @@ matrix:
     env: ARCH="arm"
   - name: "Android x86"
     env: ARCH="x86"
-  script: chmod +x ./build.sh; ./build.sh
+script: chmod +x ./build.sh; ./build.sh
