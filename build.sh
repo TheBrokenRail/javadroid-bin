@@ -45,7 +45,6 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   make clean
   make
   make install
-  rm build_android-arm
   ln -s arm-unknown-linux-androideabi build_android-arm
   
   cd ../
@@ -81,7 +80,6 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   EXTRA_ARM_1="--with-libffi-include=${LIBFFI_DIR}/include"
   EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
 fi
-
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 
 cd mobile-dev
