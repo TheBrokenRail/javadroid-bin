@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# TOOLCHAIN_ARCH = ["arm", "x86"]
+# ANDROID_ARCH = ["arm-linux-androideabi", "i686-linux-android"]
+# LIB_ARCH = ["arm", "i686"]
+
+# Download NDK
+NDK_VER='android-ndk-r18b'
+curl -o ndk.zip "https://dl.google.com/android/repository/${NDK_VER}-linux-x86_64.zip"
+unzip ndk.zip
+NDK_HOME=$(pwd)/${NDK_VER}
+
+# Build Toolchain
+${NDK_HOME}/build/tools/make-standalone-toolchain.sh \
+  --arch=${TOOLCHAIN_ARCH} \
+  --platform=android-19 \
+  --install-dir=${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain
+ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
+
+# Create Devkit File
+echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
+echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
+echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
+PATH=$ANDROID_DEVKIT/bin:$PATH
+
+# Build libffi for ARM
+if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
+  curl -o libffi.tar.gz ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz
+  tar -xvf libffi.tar.gz
+  cd libffi-3.2.1
+
+  ./configure --host=arm-linux-androideabi --prefix=$(pwd)/arm-unknown-linux-androideabi
+  make clean
+  make
+  make install
+  rm build_android-arm
+  ln -s arm-unknown-linux-androideabi build_android-arm
+  
+  cd ../
+fi
+
+# Build libfreetype
+curl -o freetype.tar.gz https://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.gz
+tar -xvf freetype.tar.gz
+cd freetype-2.6.2
+
+./configure --host=${LIB_ARCH}-linux-android \
+  --prefix=$(pwd)/build_android-${LIB_ARCH} \
+  --without-zlib \
+  --with-png=no \
+  --with-harfbuzz=no
+make clean
+make
+make install
+
+cd ../
+
+# Build JDK
+hg clone http://hg.openjdk.java.net/mobile/jdk9 mobile-dev
+cd mobile-dev
+sh get_source.sh
+
+EXTRA_ARM_1=""
+EXTRA_ARM_2=""
+JVM_VARIANT="client"
+if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
+  JVM_VARIANT="zero"
+  LIBFFI_DIR=$(pwd)/../libffi-3.2.1/build_android-arm
+  EXTRA_ARM_1="--with-libffi-include=${LIBFFI_DIR}/include"
+  EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
+fi
+
+FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
+
+cd mobile-dev
+bash configure \
+  --enable-option-checking=fatal \
+  --build=x86_64-unknown-linux-gnu \
+  --host=${LIB_ARCH}-linux-android \
+  --target=${LIB_ARCH}-linux-android \
+  --disable-warnings-as-errors \
+  --enable-headless-only \
+  --with-jdk-variant=normal \
+  --with-jvm-variants=${JVM_VARIANT} \
+  --with-devkit=${ANDROID_DEVKIT} \
+  --with-debug-level=release \
+  --with-freetype-lib=${FREETYPE_DIR}/lib \
+  --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
+  ${EXTRA_ARM_1} \
+  ${EXTRA_ARM_2}
+
+cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
+make images
