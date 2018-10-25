@@ -86,7 +86,7 @@ bash configure \
   --enable-option-checking=fatal \
   --build=x86_64-unknown-linux-gnu \
   --host=${LIB_ARCH}-linux-android \
-  --target=${LIB_ARCH}-linux-android \
+  --openjdk-target=${LIB_ARCH}-linux-android \
   --disable-warnings-as-errors \
   --enable-headless-only \
   --with-jdk-variant=normal \
@@ -97,7 +97,7 @@ bash configure \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
-  CFLAGS=-fPIE -pie
+  CFLAGS="-fPIE -pie"
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
