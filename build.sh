@@ -82,7 +82,7 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 
-bash configure --help
+set +e
 bash configure \
   --enable-option-checking=fatal \
   --openjdk-target=${LIB_ARCH}-linux-android \
@@ -97,6 +97,8 @@ bash configure \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
   CFLAGS="-fPIE -pie"
+set -e
+cat config.log
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
