@@ -68,6 +68,7 @@ cd ../
 
 # Build JDK
 hg clone http://hg.openjdk.java.net/mobile/jdk9 mobile-dev
+ls
 cd mobile-dev
 sh get_source.sh
 
