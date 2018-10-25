@@ -28,11 +28,10 @@ ${NDK_HOME}/build/tools/make-standalone-toolchain.sh \
   --platform=android-19 \
   --install-dir=${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain
 ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
-tree ${ANDROID_DEVKIT}
 
 # Create Devkit File
 echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
-echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
+echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
 PATH=$ANDROID_DEVKIT/bin:$PATH
 
@@ -97,8 +96,8 @@ bash configure \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
-  CFLAGS="-fPIE" \
-  LDFLAGS="-pie"
+  --with-extra-cflags="-fPIE" \
+  --with-extra-ldflags="-pie"
 set -e
 cat config.log
 
