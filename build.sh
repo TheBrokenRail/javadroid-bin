@@ -33,7 +33,8 @@ ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolc
 echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
-PATH=${ANDROID_DEVKIT}/bin:${ANDROID_DEVKIT}/${ANDROID_ARCH}/bin:$PATH
+echo 'DEVKIT_EXTRA_PATH="$DEVKIT_ROOT/libexec/gcc/'"${ANDROID_ARCH}"'/4.8"' >> ${ANDROID_DEVKIT}/devkit.info
+PATH=${ANDROID_DEVKIT}/bin:$PATH
 
 # Build libffi for ARM
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
