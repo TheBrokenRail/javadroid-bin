@@ -67,9 +67,8 @@ make install
 cd ../
 
 # Build JDK
-hg clone http://hg.openjdk.java.net/mobile/jdk9 mobile-dev
-ls
-cd mobile-dev
+hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
+cd jdk
 sh get_source.sh
 
 EXTRA_ARM_1=""
@@ -83,7 +82,6 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 
-cd mobile-dev
 bash configure \
   --enable-option-checking=fatal \
   --build=x86_64-unknown-linux-gnu \
@@ -103,3 +101,4 @@ bash configure \
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
+ls
