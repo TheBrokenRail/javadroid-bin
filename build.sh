@@ -85,8 +85,6 @@ FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 bash configure --help
 bash configure \
   --enable-option-checking=fatal \
-  --build=x86_64-unknown-linux-gnu \
-  --host=${LIB_ARCH}-linux-android \
   --openjdk-target=${LIB_ARCH}-linux-android \
   --disable-warnings-as-errors \
   --enable-headless-only \
