@@ -5,3 +5,7 @@ matrix:
   - name: "Android x86"
     env: ARCH="x86"
 script: chmod +x ./build.sh; ./build.sh
+addons:
+  apt:
+    packages:
+    - tree
