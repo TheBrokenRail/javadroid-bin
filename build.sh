@@ -31,7 +31,7 @@ ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolc
 
 # Create Devkit File
 echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
-echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/bin"' >> ${ANDROID_DEVKIT}/devkit.info
+echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
 PATH=$ANDROID_DEVKIT/bin:$PATH
 
