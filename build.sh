@@ -33,7 +33,6 @@ ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolc
 echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
-echo 'DEVKIT_EXTRA_PATH="$DEVKIT_ROOT/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 PATH=${ANDROID_DEVKIT}/bin:$PATH
 
 # Build libffi for ARM
@@ -97,7 +96,7 @@ bash configure \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
-  --with-extra-cflags="-fPIE" \
+  --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie"
 set -e
 cat config.log
