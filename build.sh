@@ -17,7 +17,7 @@ if [ ${ARCH} = "x86" ]; then
 fi
 
 # Download NDK
-NDK_VER='android-ndk-r10e'
+NDK_VER='android-ndk-r13b'
 curl -L -o ndk.zip "https://dl.google.com/android/repository/${NDK_VER}-linux-x86_64.zip"
 unzip ndk.zip > /dev/null
 NDK_HOME=$(pwd)/${NDK_VER}
