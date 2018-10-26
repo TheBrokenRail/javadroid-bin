@@ -69,6 +69,7 @@ cd ../
 # Download CUPS
 curl -L -o cups.tar.gz "https://github.com/apple/cups/releases/download/v2.2.8/cups-2.2.8-source.tar.gz"
 tar -xvf cups.tar.gz
+ln -s . cups-2.2.8/include
 
 # Build JDK
 hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
@@ -87,6 +88,7 @@ fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 CUPS=$(pwd)/../cups-2.2.8
 
+bash configure --help
 bash configure \
   --enable-option-checking=fatal \
   --openjdk-target=${LIB_ARCH}-linux-android \
@@ -101,7 +103,7 @@ bash configure \
   ${EXTRA_ARM_2} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie"
-  --with-cups-includes=${CUPS}
+  --with-cups=${CUPS}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
