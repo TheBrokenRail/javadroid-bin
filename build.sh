@@ -86,7 +86,7 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
-CUPS=$(pwd)/../cups-2.2.8
+CUPS=$(pwd)/../cups-2.2.8/includes
 
 bash configure --help
 bash configure \
@@ -103,7 +103,7 @@ bash configure \
   ${EXTRA_ARM_2} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie"
-  --with-cups=${CUPS}
+  --with-cups-includes=${CUPS}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
