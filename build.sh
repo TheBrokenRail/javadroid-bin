@@ -101,6 +101,7 @@ bash configure \
   ${EXTRA_ARM_2} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie"
+  --with-cups=${CUPS}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
