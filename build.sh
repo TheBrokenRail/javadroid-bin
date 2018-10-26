@@ -33,7 +33,7 @@ ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolc
 echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
 echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
-PATH=${ANDROID_DEVKIT}/bin:$PATH
+PATH=${ANDROID_DEVKIT}//bin:$PATH
 
 # Build libffi for ARM
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
@@ -90,7 +90,6 @@ bash configure \
   --enable-headless-only \
   --with-jdk-variant=normal \
   --with-jvm-variants=${JVM_VARIANT} \
-  --with-devkit=${ANDROID_DEVKIT} \
   --with-debug-level=release \
   --with-freetype-lib=${FREETYPE_DIR}/lib \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
