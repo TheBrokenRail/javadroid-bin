@@ -38,7 +38,7 @@ PATH=${ANDROID_DEVKIT}//bin:$PATH
 # Build libffi for ARM
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   curl -L -o libffi.tar.gz "https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
-  tar -xvf libffi.tar.gz
+  tar -xvf libffi.tar.gz > /dev/null
   cd libffi-3.2.1
 
   bash configure --host=arm-linux-androideabi --prefix=$(pwd)/arm-unknown-linux-androideabi
@@ -52,7 +52,7 @@ fi
 
 # Build libfreetype
 curl -L -o freetype.tar.gz "https://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.gz"
-tar -xvf freetype.tar.gz
+tar -xvf freetype.tar.gz > /dev/null
 cd freetype-2.6.2
 
 bash configure --host=${LIB_ARCH}-linux-android \
@@ -68,7 +68,7 @@ cd ../
 
 # Download CUPS
 curl -L -o cups.tar.gz "https://github.com/apple/cups/releases/download/v2.2.8/cups-2.2.8-source.tar.gz"
-tar -xvf cups.tar.gz
+tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
 hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
@@ -102,7 +102,7 @@ bash configure \
   ${EXTRA_ARM_2} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie" \
-  --with-cups-includes=${CUPS}
+  --with-cups-include=${CUPS}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
