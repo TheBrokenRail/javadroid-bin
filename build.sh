@@ -109,5 +109,5 @@ bash configure \
 
 cat make/Init.gmk
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
-make images
+make jre-image
 ls
