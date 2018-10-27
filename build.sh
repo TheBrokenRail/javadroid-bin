@@ -18,7 +18,7 @@ fi
 
 # Download NDK
 echo 'Downloading NDK...'
-NDK_VER='android-ndk-r16b'
+NDK_VER='android-ndk-r13b'
 curl --retry 5 -L -o ndk.zip "https://dl.google.com/android/repository/${NDK_VER}-linux-x86_64.zip"
 unzip ndk.zip > /dev/null
 NDK_HOME=$(pwd)/${NDK_VER}
@@ -27,7 +27,7 @@ NDK_HOME=$(pwd)/${NDK_VER}
 echo 'Building Toolchain...'
 ${NDK_HOME}/build/tools/make-standalone-toolchain.sh \
   --arch=${TOOLCHAIN_ARCH} \
-  --platform=android-19 \
+  --platform=android-21 \
   --install-dir=${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain
 ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
 
