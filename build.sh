@@ -85,12 +85,14 @@ sh get_source.sh
 
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
+EXTRA_ARM_3=""
 JVM_VARIANT="client"
 if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   JVM_VARIANT="zero"
   LIBFFI_DIR=$(pwd)/../libffi-3.2.1/build_android-arm
   EXTRA_ARM_1="--with-libffi-include=${LIBFFI_DIR}/include"
   EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
+  EXTRA_ARM_3="--with-abi-profile=arm-vfp-sflt"
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 CUPS=$(pwd)/../cups-2.2.8
@@ -107,6 +109,7 @@ bash configure \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
+  ${EXTRA_ARM_3} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie" \
   --with-cups-include=${CUPS} \
