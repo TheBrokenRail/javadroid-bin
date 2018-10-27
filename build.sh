@@ -104,8 +104,7 @@ bash configure \
   --with-extra-ldflags="-pie" \
   --with-cups-include=${CUPS}
 
-cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
-ls
 cat Makefile
+cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 make images
 ls
