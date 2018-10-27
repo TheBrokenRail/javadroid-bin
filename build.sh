@@ -73,7 +73,7 @@ curl -L -o cups.tar.gz "https://github.com/apple/cups/releases/download/v2.2.8/c
 tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
-hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
+hg clone http://hg.openjdk.java.net/mobile/jdk jdk
 cd jdk
 sh get_source.sh
 
