@@ -105,5 +105,7 @@ bash configure \
   --with-cups-include=${CUPS}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
-make jre-images
+ls
+cat Makefile
+make images
 ls
