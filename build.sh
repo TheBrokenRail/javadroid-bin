@@ -88,7 +88,7 @@ fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 CUPS=$(pwd)/../cups-2.2.8
 
-bash configure --help
+cp /usr/share/misc/config.{sub,guess} make/autoconf/build-aux
 bash configure \
   --enable-option-checking=fatal \
   --openjdk-target=${ANDROID_ARCH} \
