@@ -17,7 +17,7 @@ if [ ${ARCH} = "x86" ]; then
 fi
 
 # Download NDK
-NDK_VER='android-ndk-r13b'
+NDK_VER='android-ndk-r16b'
 curl -L -o ndk.zip "https://dl.google.com/android/repository/${NDK_VER}-linux-x86_64.zip"
 unzip ndk.zip > /dev/null
 NDK_HOME=$(pwd)/${NDK_VER}
@@ -73,8 +73,9 @@ curl -L -o cups.tar.gz "https://github.com/apple/cups/releases/download/v2.2.8/c
 tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
-hg clone http://hg.openjdk.java.net/mobile/jdk jdk
+hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
 cd jdk
+sh get_source.sh
 
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
@@ -88,7 +89,6 @@ fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
 CUPS=$(pwd)/../cups-2.2.8
 
-cp /usr/share/misc/config.{sub,guess} make/autoconf/build-aux
 bash configure \
   --enable-option-checking=fatal \
   --openjdk-target=${ANDROID_ARCH} \
