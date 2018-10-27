@@ -30,9 +30,7 @@ ${NDK_HOME}/build/tools/make-standalone-toolchain.sh \
 ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
 
 # Create Devkit File
-echo 'DEVKIT_NAME="Android"' > ${ANDROID_DEVKIT}/devkit.info
-echo 'DEVKIT_TOOLCHAIN_PATH="$DEVKIT_ROOT/'"${ANDROID_ARCH}"'/bin"' >> ${ANDROID_DEVKIT}/devkit.info
-echo 'DEVKIT_SYSROOT="$DEVKIT_ROOT/sysroot"' >> ${ANDROID_DEVKIT}/devkit.info
+SYSROOT=${ANDROID_DEVKIT}/sysroot
 PATH=${ANDROID_DEVKIT}//bin:$PATH
 
 # Build libffi for ARM
@@ -41,7 +39,10 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   tar -xvf libffi.tar.gz > /dev/null
   cd libffi-3.2.1
 
-  bash configure --host=arm-linux-androideabi --prefix=$(pwd)/arm-unknown-linux-androideabi
+  bash configure \
+    --host=arm-linux-androideabi \
+    --prefix=$(pwd)/arm-unknown-linux-androideabi \
+    --with-sysroot=${SYSROOT}
   make clean
   make
   make install
@@ -59,7 +60,8 @@ bash configure --host=${ANDROID_ARCH} \
   --prefix=$(pwd)/build_android-${LIB_ARCH} \
   --without-zlib \
   --with-png=no \
-  --with-harfbuzz=no
+  --with-harfbuzz=no \
+  --with-sysroot=${SYSROOT}
 make clean
 make
 make install
@@ -102,7 +104,8 @@ bash configure \
   ${EXTRA_ARM_2} \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie" \
-  --with-cups-include=${CUPS}
+  --with-cups-include=${CUPS} \
+  --with-sysroot=${SYSROOT}
 
 cat make/Init.gmk
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
