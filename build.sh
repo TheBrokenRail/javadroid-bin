@@ -55,7 +55,7 @@ curl -L -o freetype.tar.gz "https://download.savannah.gnu.org/releases/freetype/
 tar -xvf freetype.tar.gz > /dev/null
 cd freetype-2.6.2
 
-bash configure --host=${LIB_ARCH}-linux-android \
+bash configure --host=${ANDROID_ARCH} \
   --prefix=$(pwd)/build_android-${LIB_ARCH} \
   --without-zlib \
   --with-png=no \
@@ -90,7 +90,7 @@ CUPS=$(pwd)/../cups-2.2.8
 bash configure --help
 bash configure \
   --enable-option-checking=fatal \
-  --openjdk-target=${LIB_ARCH}-linux-android \
+  --openjdk-target=${ANDROID_ARCH} \
   --disable-warnings-as-errors \
   --enable-headless-only \
   --with-jdk-variant=normal \
