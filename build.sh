@@ -37,7 +37,7 @@ NDK_HOME=$(pwd)/${NDK_VER}
 echo 'Building Toolchain...'
 ${NDK_HOME}/build/tools/make_standalone_toolchain.py \
   --arch=${TOOLCHAIN_ARCH} \
-  --api=android-21 \
+  --api=21 \
   --install-dir=${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain
 ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
 
