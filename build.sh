@@ -18,11 +18,12 @@ fi
 
 retry() {
   n=0
-  until [ $n -ge 5 ]; do
+  until [ $n -ge 4 ]; do
     $1 && break
     n=$[$n+1]
     sleep 10
   done
+  $1
 }
 
 # Download NDK
