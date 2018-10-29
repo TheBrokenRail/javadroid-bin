@@ -116,5 +116,5 @@ bash configure \
   --with-sysroot=${SYSROOT}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
-LOG=debug make jre-image
+travis_wait make jre-image
 ls
