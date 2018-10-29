@@ -115,7 +115,6 @@ bash configure \
   --with-cups-include=${CUPS} \
   --with-sysroot=${SYSROOT}
 
-cat make/Init.gmk
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
-make jre-image
+LOG=debug make jre-image
 ls
