@@ -116,5 +116,7 @@ bash configure \
   --with-sysroot=${SYSROOT}
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
+while sleep 5m; do echo "Command Still Running..."; done &
 make jre-image
+kill %1
 ls
