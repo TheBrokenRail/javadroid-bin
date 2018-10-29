@@ -16,16 +16,6 @@ if [ ${ARCH} = "x86" ]; then
   LIB_ARCH="i686"
 fi
 
-retry() {
-  n=0
-  until [ $n -ge 4 ]; do
-    $1 && break
-    n=$[$n+1]
-    sleep 10
-  done
-  $1
-}
-
 # Download NDK
 echo 'Downloading NDK...'
 NDK_VER='android-ndk-r13b'
@@ -89,7 +79,7 @@ tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
 echo 'Building JDK...'
-retry "hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk"
+hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
 cd jdk
 sh get_source.sh
 
