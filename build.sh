@@ -121,13 +121,22 @@ bash configure \
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 while sleep 5m; do echo "Command Still Running..."; done &
+PID=$!
 make images
-kill %1
+kill ${PID}
+wait ${PID} 2>/dev/null
 
 # Deploy to GitHub
+mkdir github
 cd images
+for FILE in *; do
+  tar -zcf ../github/${FILE}.tar.gz ${FILE}
+done
+cd github
+
 git init
 git add .
 git commit --quiet -m "Deploy to Github Pages: ${SHA}"
 git push --force "https://${GITHUB_TOKEN}@github.com/TheBrokenRail/javadroid-bin.git" master:${ARCH}
+
 cd ../
