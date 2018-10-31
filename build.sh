@@ -121,10 +121,8 @@ bash configure \
 
 cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 while sleep 5m; do echo "Command Still Running..."; done &
-PID=$!
 make images
-kill ${PID}
-wait ${PID} 2>/dev/null
+kill %1
 
 # Deploy to GitHub
 mkdir github
