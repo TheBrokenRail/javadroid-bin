@@ -16,6 +16,10 @@ if [ ${ARCH} = "x86" ]; then
   LIB_ARCH="i686"
 fi
 
+git config --global user.email $(git log --pretty=format:"%ae" -n1)
+git config --global user.name "$(git log --pretty=format:"%an" -n1)"
+SHA=$(git rev-parse --verify HEAD)
+
 # Download NDK
 echo 'Downloading NDK...'
 NDK_VER='android-ndk-r13b'
@@ -119,4 +123,11 @@ cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
 while sleep 5m; do echo "Command Still Running..."; done &
 make jre-image
 kill %1
-ls
+
+# Deploy to GitHub
+cd images
+git init
+git add .
+git commit --quiet -m "Deploy to Github Pages: ${SHA}"
+git push --force "https://${GITHUB_TOKEN}@github.com/TheBrokenRail/javadroid-bin.git" master:${ARCH}
+cd ../
