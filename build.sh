@@ -130,7 +130,7 @@ mkdir github
 cd images
 for FILE in *; do
   tar -zcf ../github/${FILE}.tar.gz ${FILE}
-  split -d -b 75M ../github/${FILE}.tar.gz "../github/${FILE}.tar.gz."
+  split -d -b 100M ../github/${FILE}.tar.gz "../github/${FILE}.tar.gz."
   rm ../github/${FILE}.tar.gz
 done
 cd ../
