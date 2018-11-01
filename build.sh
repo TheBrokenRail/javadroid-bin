@@ -126,15 +126,16 @@ kill %1
 
 # Deploy to GitHub
 mkdir github
+
 cd images
 for FILE in *; do
   tar -zcf ../github/${FILE}.tar.gz ${FILE}
 done
-cd github
+cd ../
 
+cd github
 git init
 git add .
 git commit --quiet -m "Deploy to Github Pages: ${SHA}"
 git push --force "https://${GITHUB_TOKEN}@github.com/TheBrokenRail/javadroid-bin.git" master:${ARCH}
-
 cd ../
