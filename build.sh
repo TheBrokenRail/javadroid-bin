@@ -129,7 +129,9 @@ mkdir github
 
 cd images
 for FILE in *; do
-  tar -cfM --tape-length=75M ../github/${FILE}.tar ${FILE}
+  tar -zcf ../github/${FILE}.tar.gz ${FILE}
+  split -b 75M ../github/${FILE}.tar.gz "../github/${FILE}.tar.gz."
+  rm ../github/${FILE}.tar.gz
 done
 cd ../
 
