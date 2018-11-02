@@ -2,18 +2,29 @@
 
 set -e
 
-# TOOLCHAIN_ARCH = ["arm", "x86"]
-# ANDROID_ARCH = ["arm-linux-androideabi", "i686-linux-android"]
-# LIB_ARCH = ["arm", "i686"]
 if [ ${ARCH} = "arm" ]; then
-  TOOLCHAIN_ARCH="arm"
   ANDROID_ARCH="arm-linux-androideabi"
-  LIB_ARCH="arm"
+  ARM=true
+fi
+if [ ${ARCH} = "arm64" ]; then
+  ANDROID_ARCH="aarch64-linux-android"
+  ARM=true
 fi
 if [ ${ARCH} = "x86" ]; then
-  TOOLCHAIN_ARCH="x86"
   ANDROID_ARCH="i686-linux-android"
-  LIB_ARCH="i686"
+  ARM=false
+fi
+if [ ${ARCH} = "x86_64" ]; then
+  ANDROID_ARCH="x86_64-linux-android"
+  ARM=false
+fi
+if [ ${ARCH} = "mips" ]; then
+  ANDROID_ARCH="mipsel-linux-android"
+  ARM=false
+fi
+if [ ${ARCH} = "mips64" ]; then
+  ANDROID_ARCH="mips64el-linux-android"
+  ARM=false
 fi
 
 git config --global user.email $(git log --pretty=format:"%ae" -n1)
@@ -30,30 +41,29 @@ NDK_HOME=$(pwd)/${NDK_VER}
 # Build Toolchain
 echo 'Building Toolchain...'
 ${NDK_HOME}/build/tools/make_standalone_toolchain.py \
-  --arch=${TOOLCHAIN_ARCH} \
+  --arch=${ARCH} \
   --api=21 \
-  --install-dir=${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain
-ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${TOOLCHAIN_ARCH}-toolchain"
+  --install-dir=${NDK_HOME}/generated-toolchains/android-${ARCH}-toolchain
+ANDROID_DEVKIT="${NDK_HOME}/generated-toolchains/android-${ARCH}-toolchain"
 
 # Prepare Enviorment
 SYSROOT=${ANDROID_DEVKIT}/sysroot
 PATH=${ANDROID_DEVKIT}//bin:$PATH
 
 # Build libffi for ARM
-if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
+if [ ${ARM} = "true" ]; then
   echo 'Building libffi...'
   curl --retry 5 -L -o libffi.tar.gz "https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
   tar -xvf libffi.tar.gz > /dev/null
   cd libffi-3.2.1
 
   bash configure \
-    --host=arm-linux-androideabi \
-    --prefix=$(pwd)/arm-unknown-linux-androideabi \
+    --host=${ANDROID_ARCH} \
+    --prefix=$(pwd)/build_android-${ARCH} \
     --with-sysroot=${SYSROOT}
   make clean
   make
   make install
-  ln -s arm-unknown-linux-androideabi build_android-arm
   
   cd ../
 fi
@@ -65,7 +75,7 @@ tar -xvf freetype.tar.gz > /dev/null
 cd freetype-2.6.2
 
 bash configure --host=${ANDROID_ARCH} \
-  --prefix=$(pwd)/build_android-${LIB_ARCH} \
+  --prefix=$(pwd)/build_android-${ARCH} \
   --without-zlib \
   --with-png=no \
   --with-harfbuzz=no \
@@ -91,14 +101,14 @@ EXTRA_ARM_1=""
 EXTRA_ARM_2=""
 EXTRA_ARM_3=""
 JVM_VARIANT="client"
-if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
+if [ ${ARCH} = "arm" ]; then
   JVM_VARIANT="zero"
-  LIBFFI_DIR=$(pwd)/../libffi-3.2.1/build_android-arm
+  LIBFFI_DIR=$(pwd)/../libffi-3.2.1/build_android-${ARCH}
   EXTRA_ARM_1="--with-libffi-include=${LIBFFI_DIR}/include"
   EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
   EXTRA_ARM_3="--with-abi-profile=arm-vfp-sflt"
 fi
-FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${LIB_ARCH}
+FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${ARCH}
 CUPS=$(pwd)/../cups-2.2.8
 
 bash configure \
@@ -119,7 +129,7 @@ bash configure \
   --with-cups-include=${CUPS} \
   --with-sysroot=${SYSROOT}
 
-cd build/android-${TOOLCHAIN_ARCH}-normal-${JVM_VARIANT}-release
+cd build/android-${ARCH}-normal-${JVM_VARIANT}-release
 while sleep 5m; do echo "Command Still Running..."; done &
 make images
 kill %1
