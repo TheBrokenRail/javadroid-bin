@@ -103,10 +103,10 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   ABI="--with-abi-profile=arm-vfp-sflt"
 fi
 if [ ${ANDROID_ARCH} = "aarch64-linux-android" ]; then
-  ABI="--with-abi-profile=aarch64"
+  ABI="--with-abi-profile=aarch64 --with-arch=armv8-a"
 fi
 if [ ${ARCH} = "x86_64" ]; then
-  ABI="--with-gcc-arch=x86-64"
+  ABI="--with-arch=x86-64"
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${ARCH}
 CUPS=$(pwd)/../cups-2.2.8
@@ -129,7 +129,7 @@ bash configure \
   --with-cups-include=${CUPS} \
   --with-sysroot=${SYSROOT} || cat config.log
 
-cd build/android-${ARCH}-normal-${JVM_VARIANT}-release
+cd build/android-*
 while sleep 5m; do echo "Command Still Running..."; done &
 make images
 kill %1
