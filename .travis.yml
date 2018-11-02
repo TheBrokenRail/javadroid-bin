@@ -2,6 +2,14 @@ matrix:
   include:
   - name: "Android ARM"
     env: ARCH="arm"
+  - name: "Android ARM 64"
+    env: ARCH="arm64"
   - name: "Android x86"
     env: ARCH="x86"
+  - name: "Android x86-64"
+    env: ARCH="x86_64"
+  - name: "Android MIPS"
+    env: ARCH="mips"
+  - name: "Android MIPS 64"
+    env: ARCH="mips64"
 script: chmod +x ./build.sh; ./build.sh
