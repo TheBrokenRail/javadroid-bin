@@ -4,10 +4,12 @@ set -e
 
 if [ ${ARCH} = "arm" ]; then
   ANDROID_ARCH="arm-linux-androideabi"
+  ARM_ARCH="arm"
   ARM=true
 fi
 if [ ${ARCH} = "arm64" ]; then
   ANDROID_ARCH="aarch64-linux-android"
+  ARM_ARCH="aarch64"
   ARM=true
 fi
 if [ ${ARCH} = "x86" ]; then
@@ -51,11 +53,12 @@ if [ ${ARM} = "true" ]; then
 
   bash configure \
     --host=${ANDROID_ARCH} \
-    --prefix=$(pwd)/build_android-${ARCH} \
+    --prefix=$(pwd)/${ARM_ARCH}-unknown-linux-androideabi \
     --with-sysroot=${SYSROOT}
   make clean
   make
   make install
+  ln -s ${ARM_ARCH}-unknown-linux-androideabi build_android-${ARCH}
   
   cd ../
 fi
