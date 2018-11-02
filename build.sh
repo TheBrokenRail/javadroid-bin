@@ -18,14 +18,6 @@ if [ ${ARCH} = "x86_64" ]; then
   ANDROID_ARCH="x86_64-linux-android"
   ARM=false
 fi
-if [ ${ARCH} = "mips" ]; then
-  ANDROID_ARCH="mipsel-linux-android"
-  ARM=false
-fi
-if [ ${ARCH} = "mips64" ]; then
-  ANDROID_ARCH="mips64el-linux-android"
-  ARM=false
-fi
 
 git config --global user.email $(git log --pretty=format:"%ae" -n1)
 git config --global user.name "$(git log --pretty=format:"%an" -n1)"
