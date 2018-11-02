@@ -127,7 +127,7 @@ bash configure \
   --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
   --with-extra-ldflags="-pie" \
   --with-cups-include=${CUPS} \
-  --with-sysroot=${SYSROOT}
+  --with-sysroot=${SYSROOT} || cat config.log
 
 cd build/android-${ARCH}-normal-${JVM_VARIANT}-release
 while sleep 5m; do echo "Command Still Running..."; done &
