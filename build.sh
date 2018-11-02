@@ -95,6 +95,7 @@ sh get_source.sh
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
 ABI=""
+CFLAGS_EXTRA=""
 JVM_VARIANT="client"
 if [ ${ARM} = "true" ]; then
   JVM_VARIANT="zero"
@@ -106,10 +107,11 @@ if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   ABI="--with-abi-profile=arm-vfp-sflt"
 fi
 if [ ${ANDROID_ARCH} = "aarch64-linux-android" ]; then
-  ABI="--with-abi-profile=aarch64 --with-arch=armv8-a"
+  ABI="--with-abi-profile=aarch64"
+  CFLAGS_EXTRA=" -march=armv8-a"
 fi
 if [ ${ARCH} = "x86_64" ]; then
-  ABI="--with-arch=x86-64"
+  CFLAGS_EXTRA=" -march=x86-64"
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${ARCH}
 CUPS=$(pwd)/../cups-2.2.8
@@ -127,7 +129,7 @@ bash configure \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
   ${ABI} \
-  --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
+  --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8${CFLAGS_EXTRA}" \
   --with-extra-ldflags="-pie" \
   --with-cups-include=${CUPS} \
   --with-sysroot=${SYSROOT} || cat config.log
