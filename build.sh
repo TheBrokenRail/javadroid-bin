@@ -76,8 +76,9 @@ tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
 echo 'Building JDK...'
-hg clone http://hg.openjdk.java.net/jdk/jdk jdk
+hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
 cd jdk
+sh get_sources.sh
 
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
@@ -99,6 +100,7 @@ bash configure \
   --disable-warnings-as-errors \
   --enable-headless-only \
   --with-jdk-variant=normal \
+  --with-jvm-variants=${JVM_VARIANT} \
   --with-debug-level=release \
   --with-freetype-lib=${FREETYPE_DIR}/lib \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
