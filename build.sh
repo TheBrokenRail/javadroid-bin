@@ -76,9 +76,8 @@ tar -xvf cups.tar.gz > /dev/null
 
 # Build JDK
 echo 'Building JDK...'
-hg clone http://hg.openjdk.java.net/mobile/jdk9 jdk
+hg clone http://hg.openjdk.java.net/jdk/jdk jdk
 cd jdk
-sh get_source.sh
 
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
