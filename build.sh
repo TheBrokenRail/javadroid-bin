@@ -99,7 +99,6 @@ bash configure \
   --disable-warnings-as-errors \
   --enable-headless-only \
   --with-jdk-variant=normal \
-  --with-jvm-variants=${JVM_VARIANT} \
   --with-debug-level=release \
   --with-freetype-lib=${FREETYPE_DIR}/lib \
   --with-freetype-include=${FREETYPE_DIR}/include/freetype2 \
