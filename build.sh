@@ -4,21 +4,9 @@ set -e
 
 if [ ${ARCH} = "arm" ]; then
   ANDROID_ARCH="arm-linux-androideabi"
-  ARM_ARCH="arm"
-  ARM=true
-fi
-if [ ${ARCH} = "arm64" ]; then
-  ANDROID_ARCH="aarch64-linux-android"
-  ARM_ARCH="aarch64"
-  ARM=true
 fi
 if [ ${ARCH} = "x86" ]; then
   ANDROID_ARCH="i686-linux-android"
-  ARM=false
-fi
-if [ ${ARCH} = "x86_64" ]; then
-  ANDROID_ARCH="x86_64-linux-android"
-  ARM=false
 fi
 
 git config --global user.email $(git log --pretty=format:"%ae" -n1)
@@ -45,7 +33,7 @@ SYSROOT=${ANDROID_DEVKIT}/sysroot
 PATH=${ANDROID_DEVKIT}//bin:$PATH
 
 # Build libffi for ARM
-if [ ${ARM} = "true" ]; then
+if [ ${ARCH} = "arm" ]; then
   echo 'Building libffi...'
   curl --retry 5 -L -o libffi.tar.gz "https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
   tar -xvf libffi.tar.gz > /dev/null
@@ -53,12 +41,12 @@ if [ ${ARM} = "true" ]; then
 
   bash configure \
     --host=${ANDROID_ARCH} \
-    --prefix=$(pwd)/${ARM_ARCH}-unknown-linux-androideabi \
+    --prefix=$(pwd)/${ARCH}-unknown-linux-androideabi \
     --with-sysroot=${SYSROOT}
   make clean
   make
   make install
-  ln -s ${ARM_ARCH}-unknown-linux-androideabi build_android-${ARCH}
+  ln -s ${ARCH}-unknown-linux-androideabi build_android-${ARCH}
   
   cd ../
 fi
@@ -95,23 +83,13 @@ sh get_source.sh
 EXTRA_ARM_1=""
 EXTRA_ARM_2=""
 ABI=""
-CFLAGS_EXTRA=""
 JVM_VARIANT="client"
-if [ ${ARM} = "true" ]; then
+if [ ${ARCH} = "arm" ]; then
   JVM_VARIANT="zero"
   LIBFFI_DIR=$(pwd)/../libffi-3.2.1/build_android-${ARCH}
   EXTRA_ARM_1="--with-libffi-include=${LIBFFI_DIR}/include"
   EXTRA_ARM_2="--with-libffi-lib=${LIBFFI_DIR}/lib"
-fi
-if [ ${ANDROID_ARCH} = "arm-linux-androideabi" ]; then
   ABI="--with-abi-profile=arm-vfp-sflt"
-fi
-if [ ${ANDROID_ARCH} = "aarch64-linux-android" ]; then
-  ABI="--with-abi-profile=aarch64"
-  FLAGS_EXTRA="-march=armv8-a"
-fi
-if [ ${ARCH} = "x86_64" ]; then
-  FLAGS_EXTRA="-march=x86-64"
 fi
 FREETYPE_DIR=$(pwd)/../freetype-2.6.2/build_android-${ARCH}
 CUPS=$(pwd)/../cups-2.2.8
@@ -129,11 +107,10 @@ bash configure \
   ${EXTRA_ARM_1} \
   ${EXTRA_ARM_2} \
   ${ABI} \
-  --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8 ${CFLAGS_EXTRA}" \
-  --with-extra-ldflags="-pie ${CFLAGS_EXTRA}" \
-  --with-extra-cxxflags="${CFLAGS_EXTRA}" \
+  --with-extra-cflags="-fPIE -B${ANDROID_DEVKIT}/libexec/gcc/${ANDROID_ARCH}/4.8" \
+  --with-extra-ldflags="-pie" \
   --with-cups-include=${CUPS} \
-  --with-sysroot=${SYSROOT} || cat config.log
+  --with-sysroot=${SYSROOT}
 
 cd build/android-*
 while sleep 5m; do echo "Command Still Running..."; done &
